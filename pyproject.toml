@@ -1,0 +1,23 @@
+[project]
+name = "Escartola"
+version = "0.1.0"
+description = "Escartola é um software que utiliza algoritmos genéticos para automatizar a escalação de times no Cartola FC, buscando sempre a melhor combinação de jogadores de acordo com desempenho e custo"
+authors = [
+    {name = "Gilmar Júnior",email = "gilmarjunioreis@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy (>=2.3.2,<3.0.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "django (>=5.2.6,<6.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)"
+]
+
+[tool.poetry]
+packages = [{include = "escartola", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
