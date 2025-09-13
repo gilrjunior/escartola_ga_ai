@@ -5,7 +5,6 @@ class Athlete:
 
         """
         Inicializa os atributos do atleta
-
             id: ID do atleta
             name: Nome do atleta
             position: Posição do atleta
@@ -23,6 +22,12 @@ class Athlete:
         self.score = score
         self.avg_score = avg_score
         self.status = status
+
+    def get_position(self):
+        return self.position
+    
+    def get_id(self):
+        return self.id
 
     def __str__(self):
 

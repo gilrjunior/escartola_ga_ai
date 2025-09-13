@@ -17,6 +17,9 @@ class Team:
     def get_total_price(self):
         return sum([athlete.price for athlete in self.athletes])
     
+    def check_if_athlete_is_in_team(self, athlete):
+        return athlete in self.athletes
+    
     def __str__(self):
         for athlete in self.athletes:
             print(f"{athlete.__str__()}\n")

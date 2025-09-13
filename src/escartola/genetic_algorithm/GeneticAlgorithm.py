@@ -5,11 +5,24 @@ import random
 import sys
 
 class GeneticAlgorithm:
-    def __init__(self, population_size, mutation_rate, crossover_rate, elitism_count = None, max_known_value = None,
-                 selection_method='roulette', tournament_size=None, budget = 100, alpha = 0.5, crossover_type='one_point'):
+    def __init__(self, population_size=500, mutation_rate=0.2, crossover_rate=0.75, elitism_count = 2,
+                 selection_method='roulette', tournament_size=4, budget = 100, alpha = 0.5, crossover_type='one_point', team_formation='4-3-3'):
+
+        """
+        Inicializa o algoritmo genético.
+        population_size: Tamanho da população
+        mutation_rate: Taxa de mutação
+        crossover_rate: Taxa de crossover
+        elitism_count: Quantidade de indivíduos elitistas
+        selection_method: Método de seleção
+        tournament_size: Tamanho do torneio
+        budget: Orçamento disponível
+        alpha: Peso da média de pontuação
+        crossover_type: Tipo de crossover
+        team_formation: Formação do time
+        """
 
         self.population_size = population_size
-
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
         self.elitism_count = elitism_count
@@ -21,6 +34,9 @@ class GeneticAlgorithm:
         self.alpha = alpha
         self.budget = budget
         self.crossover_type = crossover_type
+        self.database = cartola_services.fetch_athletes()
+        self.team_formations = cartola_services.fecth_team_formations()
+        self.team_formation = team_formation
 
     def initialize_population(self):
         """
@@ -29,30 +45,12 @@ class GeneticAlgorithm:
         
         current_population = []
 
-        database = cartola_services.fetch_athletes()
+        team_formation = []
 
-        team_formation = [
-            {
-                'position': 'GOL',
-                'quantity': 1
-            },
-            {
-                'position': 'ZAG',
-                'quantity': 2
-            },
-            {
-                'position': 'LAT',
-                'quantity': 2
-            },
-            {
-                'position': 'MEI',
-                'quantity': 3
-            },
-            {
-                'position': 'ATA',
-                'quantity': 3
-            }
-        ]
+        for formation in self.team_formations:
+            if formation['name'] == self.team_formation:
+                team_formation = formation['team_formation']
+                break
 
         for _ in range(self.population_size):
 
@@ -60,7 +58,7 @@ class GeneticAlgorithm:
 
             for position in team_formation:
 
-                database_by_position = [athlete for athlete in database if athlete.position == position['position'] and athlete.status == "Provável"]
+                database_by_position = [athlete for athlete in self.database if athlete.position == position['position'] and athlete.status == "Provável"]
 
                 for _ in range(position['quantity']):
                     athlete = random.choice(database_by_position)
@@ -98,15 +96,16 @@ class GeneticAlgorithm:
         team_budget = self.calculate_team_budget(team)
 
         # fitness = (1 - ((preço_time- valor_disponivel)/valor_disponivel)) * score
-        pen_budget = 1 - ((team_budget - self.budget) / self.budget)
+        h_pen_budget = ((team_budget - self.budget) / self.budget) # excesso de budget
+        l_pen_budget = ((self.budget - team_budget) / self.budget) # falta de budget
 
-        if pen_budget < 0:
-            pen_budget = 0
+        if h_pen_budget > 1:
+            h_pen_budget = 1
 
-        if pen_budget > 1:
-            pen_budget = 1
+        if l_pen_budget < 0:
+            l_pen_budget = 1
 
-        fitness = (1 - pen_budget) * team_score
+        fitness = ((1 - h_pen_budget) + (1 - l_pen_budget)) * team_score
 
         return fitness
 
@@ -154,13 +153,16 @@ class GeneticAlgorithm:
 
         for _ in range(self.population_size):
 
-            participants_indices = np.random.choice(len(self.current_population), self.tournament_size, replace=False)
-            participants_fitness = fitness_values[participants_indices]
+            participants_fitness = []
 
-            winner_indice = participants_indices[np.argmax(participants_fitness)] # type: ignore
+            participants_indices = np.random.choice(len(self.current_population), self.tournament_size, replace=False)
+            for indice in participants_indices: # type: ignore
+                participants_fitness.append(fitness_values[indice])
+
+            winner_indice = np.argmax(participants_fitness)
             selected.append(self.current_population[winner_indice])
 
-        return np.array(selected)
+        return selected
 
     def one_point_crossover(self, parent1, parent2):
         """
@@ -222,17 +224,23 @@ class GeneticAlgorithm:
         
         for team in self.current_population:
             if random.random() < self.mutation_rate:
-                position = random.sample(range(len(team.athletes)), 2)
+                idx = random.sample(range(len(team.athletes)-1), 2)
+                for i in idx:
+                    old_athlete = team.athletes[i]
 
-                athlete1 = team.athletes[position[0]]
-                team.athletes[position[0]] = team.athletes[position[1]]
-                team.athletes[position[1]] = athlete1
+                    position = old_athlete.get_position()
+                    id = old_athlete.get_id()
 
-    def run(self, generations, update_callback=None):
+                    new_athlete = [athlete for athlete in self.database if athlete.position == position and athlete.status == "Provável" and athlete.id != id]
+
+                    if team.check_if_athlete_is_in_team(new_athlete):
+                        team.athletes[i] = new_athlete
+
+    def run(self, generations):
         """
         Executa o algoritmo genético por um número definido de gerações.
         """
-        elite_individuals = None
+        elite_individuals = []
         self.current_population = self.initialize_population()
 
         for _ in range(generations):
@@ -245,7 +253,8 @@ class GeneticAlgorithm:
             # Elitismo: mantém os melhores indivíduos da geração anterior
             if self.elitism_count and self.elitism_count > 0:
                 elite_indices = np.argsort(fitness_values)[-self.elitism_count:]
-                elite_individuals = self.current_population[elite_indices]
+                for indice in elite_indices:
+                    elite_individuals.append(self.current_population[indice])
 
             # Faz a seleção, crossover e mutação
             self.selection(fitness_values)

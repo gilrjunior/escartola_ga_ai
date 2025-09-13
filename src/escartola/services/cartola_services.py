@@ -1,3 +1,5 @@
+from turtle import position
+from urllib import response
 import requests
 from models.athlete.Athlete import Athlete
 from dotenv import load_dotenv # type: ignore
@@ -42,4 +44,57 @@ def fetch_status_by_id(status_id, status_list):
     for status in status_list:
         if status['id'] == status_id:
             return status['nome']
-    return "Indisponível"   
+    return "Indisponível"
+
+
+def fecth_team_formations():
+
+    load_dotenv()
+
+    response = requests.get(f"{os.getenv('team_formations_url')}")
+    data = response.json()
+
+    formations = map_formation(data)
+
+    return formations
+
+def map_formation(data):
+
+    formations = []
+
+    for formation in data:
+        name = formation['nome']
+        positions = formation['posicoes']
+        team_formation = [
+            {
+                'position': 'GOL',
+                'quantity': positions['gol']
+            },
+            {
+                'position': 'ZAG',
+                'quantity': positions['zag']
+            },
+            {
+                'position': 'LAT',
+                'quantity': positions['lat']
+            },
+            {
+                'position': 'MEI',
+                'quantity': positions['mei']
+            },
+            {
+                'position': 'ATA',
+                'quantity': positions['ata']
+            },
+            {
+                'position': 'TEC',
+                'quantity': positions['tec']
+            }
+        ]
+
+        formations.append({
+            'name': name,
+            'team_formation': team_formation
+        })
+
+    return formations
