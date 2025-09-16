@@ -1,7 +1,5 @@
-from turtle import position
-from urllib import response
 import requests
-from models.athlete.Athlete import Athlete
+from escartola.models.athlete.Athlete import Athlete
 from dotenv import load_dotenv # type: ignore
 import os
 

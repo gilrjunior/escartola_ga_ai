@@ -1,12 +1,12 @@
 import numpy as np
-from models.team.Team import Team
-import services.cartola_services as cartola_services
+from escartola.models.team.Team import Team
+import escartola.services.cartola_services as cartola_services
 import random
 import sys
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=500, mutation_rate=0.2, crossover_rate=0.75, elitism_count = 2,
-                 selection_method='roulette', tournament_size=4, budget = 100, alpha = 0.5, crossover_type='one_point', team_formation='4-3-3'):
+    def __init__(self, population_size=500, mutation_rate=0.2, crossover_rate=0.75, elitism_count = 4,
+                 selection_method='roulette', tournament_size=4, budget = 100.0, alpha = 0.2, crossover_type='one_point', team_formation='4-3-3'):
 
         """
         Inicializa o algoritmo genético.

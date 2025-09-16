@@ -1,5 +1,3 @@
-from models.athlete.Athlete import Athlete
-
 class Team:
 
     def __init__(self, athletes):
@@ -16,6 +14,9 @@ class Team:
     
     def get_total_price(self):
         return sum([athlete.price for athlete in self.athletes])
+    
+    def get_total_score(self):
+        return sum([athlete.score for athlete in self.athletes])
     
     def check_if_athlete_is_in_team(self, athlete):
         return athlete in self.athletes
