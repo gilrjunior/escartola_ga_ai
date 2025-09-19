@@ -4,14 +4,17 @@
     <meta charset="utf-8" />
     <title>Escartola - Escalação Ótima</title>
     <style>
-      body { 
-        font-family: Arial, sans-serif; 
-        margin: 0; 
-        padding: 20px; 
+      /* ===== reset & helpers ===== */
+      *, *::before, *::after { box-sizing: border-box; }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
       }
-      
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -20,365 +23,26 @@
         padding: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       }
-      
-      h1 { 
-        text-align: center; 
-        color: #333; 
+
+      h1 {
+        text-align: center;
+        color: #333;
         margin-bottom: 20px;
         font-size: 2.5em;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
       }
-      
-      .meta { 
-        background: #f8f9fa; 
-        padding: 15px; 
-        border-radius: 10px; 
-        margin-bottom: 20px; 
+
+      .meta {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
         text-align: center;
         border-left: 5px solid #007bff;
       }
-      
-      .meta strong {
-        color: #007bff;
-        margin: 0 10px;
-      }
-      
-      .field-container {
-        display: flex;
-        justify-content: center;
-        margin: 30px 0;
-      }
-      
-      .football-field {
-        width: 700px;
-        height: 500px;
-        background: linear-gradient(45deg, #4CAF50, #45a049);
-        border: 6px solid #2E7D32;
-        border-radius: 15px;
-        position: relative;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        overflow: hidden;
-        margin: 0 auto;
-      }
-      
-      .field-lines {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-      
-      .center-line {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 3px;
-        height: 100%;
-        background: white;
-        transform: translateX(-50%);
-      }
-      
-      .center-circle {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100px;
-        height: 100px;
-        border: 3px solid white;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-      }
-      
-      .center-dot {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        background: white;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-      }
-      
-      .goal-area {
-        position: absolute;
-        top: 50%;
-        width: 80px;
-        height: 140px;
-        border: 3px solid white;
-        transform: translateY(-50%);
-      }
-      
-      .goal-left {
-        left: 0;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      
-      .goal-right {
-        right: 0;
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-      
-      .penalty-area {
-        position: absolute;
-        top: 50%;
-        width: 160px;
-        height: 240px;
-        border: 3px solid white;
-        transform: translateY(-50%);
-      }
-      
-      .penalty-left {
-        left: 0;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      
-      .penalty-right {
-        right: 0;
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-      
-      .penalty-area-complete-left {
-        position: absolute;
-        top: 50%;
-        width: 160px;
-        height: 240px;
-        border: 3px solid white;
-        transform: translateY(-50%);
-        left: 0;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        box-sizing: border-box;
-      }
-      
-      .penalty-area-complete-right {
-        position: absolute;
-        top: 50%;
-        width: 160px;
-        height: 240px;
-        border: 3px solid white;
-        transform: translateY(-50%);
-        right: 0;
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        box-sizing: border-box;
-      }
-      
-      
-      .penalty-spot {
-        position: absolute;
-        top: 50%;
-        width: 6px;
-        height: 6px;
-        background: white;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-      }
-      
-      .penalty-spot-left {
-        left: 120px;
-      }
-      
-      .penalty-spot-right {
-        right: 120px;
-      }
-      
-      .corner-arc {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border: 2px solid white;
-        border-radius: 50%;
-      }
-      
-      .corner-top-left {
-        top: 0;
-        left: 0;
-        border-bottom-right-radius: 0;
-        border-right: none;
-        border-bottom: none;
-      }
-      
-      .corner-top-right {
-        top: 0;
-        right: 0;
-        border-bottom-left-radius: 0;
-        border-left: none;
-        border-bottom: none;
-      }
-      
-      .corner-bottom-left {
-        bottom: 0;
-        left: 0;
-        border-top-right-radius: 0;
-        border-right: none;
-        border-top: none;
-      }
-      
-      .corner-bottom-right {
-        bottom: 0;
-        right: 0;
-        border-top-left-radius: 0;
-        border-left: none;
-        border-top: none;
-      }
-      
-      .player {
-        position: absolute;
-        width: 45px;
-        height: 45px;
-        background: radial-gradient(circle, #FFD700, #FFA500);
-        border: 3px solid #FF6B35;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: bold;
-        color: #333;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
-        z-index: 10;
-        transform: translate(-50%, -50%);
-      }
-      
-      .player:hover {
-        transform: translate(-50%, -50%) scale(1.2);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.4);
-      }
-      
-      .player-name {
-        font-size: 9px;
-        line-height: 1.1;
-        text-align: center;
-        word-break: break-all;
-        max-width: 38px;
-        font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-      }
-      
-      .coach {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background: radial-gradient(circle, #8B4513, #A0522D);
-        border: 3px solid #654321;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: bold;
-        color: white;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
-        z-index: 10;
-        transform: translate(-50%, -50%);
-      }
-      
-      .coach:hover {
-        transform: translate(-50%, -50%) scale(1.2);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.3);
-      }
-      
-      .coach-name {
-        font-size: 8px;
-        line-height: 1.1;
-        text-align: center;
-        word-break: break-all;
-        max-width: 40px;
-        font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-      }
-      
-      
-      .position-legend {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 20px;
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 10px;
-      }
-      
-      .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 12px;
-        color: #666;
-      }
-      
-      .legend-color {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #FFD700;
-        border: 2px solid #FF6B35;
-      }
-      
-      .stats-table {
-        margin-top: 30px;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      }
-      
-      table { 
-        border-collapse: collapse; 
-        width: 100%; 
-      }
-      
-      th, td { 
-        padding: 12px; 
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      
-      th { 
-        background: #007bff; 
-        color: white; 
-        font-weight: bold;
-      }
-      
-      tr:hover {
-        background: #f5f5f5;
-      }
-      
-      .tip {
-        background: #e3f2fd;
-        border-left: 4px solid #2196f3;
-        padding: 15px;
-        margin-top: 20px;
-        border-radius: 5px;
-      }
-      
-      .tip code {
-        background: #bbdefb;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Courier New', monospace;
-      }
-      
+      .meta strong { color: #007bff; margin: 0 10px; }
+
+      /* ===== controls ===== */
       .controls-container {
         background: #f8f9fa;
         border-radius: 15px;
@@ -387,147 +51,166 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         border: 2px solid #e9ecef;
       }
-      
       .controls-form {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 25px;
+        grid-template-columns: 1fr 1fr 1fr auto;
+        gap: 16px;
         align-items: end;
       }
-      
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      
-      .form-group label {
-        font-weight: bold;
-        color: #333;
-        font-size: 14px;
-      }
-      
+      .form-group { display: flex; flex-direction: column; gap: 8px; }
+      .form-group label { font-weight: bold; color: #333; font-size: 14px; }
       .form-control {
-        padding: 12px 15px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        background: white;
+        padding: 12px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;
+        transition: all 0.3s ease; background: white;
       }
-      
       .form-control:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
       }
-      
-      .slider-container {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      
-      .slider {
-        width: 100%;
-        height: 8px;
-        border-radius: 5px;
-        background: #ddd;
-        outline: none;
-        -webkit-appearance: none;
-        appearance: none;
-        cursor: pointer;
-      }
-      
+      .slider-container { display: flex; flex-direction: column; gap: 8px; }
+      .slider { width: 100%; height: 8px; border-radius: 5px; background: #ddd; outline: none; appearance: none; cursor: pointer; }
       .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #007bff;
-        cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-      }
-      
-      .slider::-webkit-slider-thumb:hover {
-        background: #0056b3;
-        transform: scale(1.1);
-      }
-      
-      .slider::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #007bff;
-        cursor: pointer;
-        border: none;
+        appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #007bff;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       }
-      
-      .slider-labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: #666;
-        margin-top: 5px;
-      }
-      
+      #alpha-value { background: #007bff; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
       .btn-optimize {
         background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        border: none;
-        padding: 15px 30px;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(40,167,69,0.3);
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        color: white; border: none; padding: 14px 20px; border-radius: 10px; font-size: 16px; font-weight: bold;
+        cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+        text-transform: uppercase; letter-spacing: 1px;
       }
-      
-      .btn-optimize:hover {
-        background: linear-gradient(135deg, #218838, #1ea085);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(40,167,69,0.4);
+      .btn-optimize:hover { transform: translateY(-1px); }
+
+      @media (max-width: 900px) {
+        .controls-form { grid-template-columns: 1fr; }
       }
-      
-      .btn-optimize:active {
-        transform: translateY(0);
-        box-shadow: 0 2px 8px rgba(40,167,69,0.3);
+
+      /* ===== field ===== */
+      .field-container { display: flex; justify-content: center; margin: 30px 0; }
+
+      .football-field {
+        /* proporção oficial: 105m x 68m */
+        aspect-ratio: 105 / 68;
+        width: min(95vw, 900px);
+        height: auto;
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: 6px solid #2E7D32;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        overflow: hidden;
+        margin: 0 auto;
       }
-      
-      #alpha-value {
-        background: #007bff;
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 12px;
+
+      .field-lines { position: absolute; inset: 0; pointer-events: none; }
+
+      .center-line {
+        position: absolute; top: 0; left: 50%; width: 3px; height: 100%;
+        background: #fff; transform: translateX(-50%);
       }
-      
-      @media (max-width: 768px) {
-        .controls-form {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
+
+      /* círculo central ~9.15m de raio => ~18.3m diâmetro -> ~27% da largura (aprox) */
+      .center-circle {
+        position: absolute; top: 50%; left: 50%;
+        width: 22%; height: 30%;
+        border: 3px solid #fff; border-radius: 50%;
+        transform: translate(-50%, -50%);
       }
+      .center-dot {
+        position: absolute; top: 50%; left: 50%;
+        width: 8px; height: 8px; background: #fff; border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      /* === Áreas (proporções aproximadas oficiais) ===
+         profundidade grande área: 16.5/105 ≈ 16%
+         altura grande área:     40.3/68  ≈ 59%
+         profundidade pequena:    5.5/105 ≈ 5.2%
+         altura pequena:         18.32/68 ≈ 27%
+      */
+
+      .penalty {
+        position: absolute; top: 50%;
+        height: 59%; width: 16%;
+        border: 3px solid #fff;
+        transform: translateY(-50%);
+      }
+      /* esquerda: usa a linha de fundo (esquerda) como lado "aberto".
+         Mantemos a LINHA VERTICAL INTERNA (border-right) -> agora ela aparece. */
+      .penalty.left  { left: 0;  border-left:  none; }
+      .penalty.right { right: 0; border-right: none; }
+
+      .goal {
+        position: absolute; top: 50%;
+        height: 27%; width: 5.2%;
+        border: 3px solid #fff;
+        transform: translateY(-50%);
+      }
+      .goal.left  { left: 0;  border-left:  none; }
+      .goal.right { right: 0; border-right: none; }
+
+      /* pontos de pênalti: 11/105 ≈ 10.5% do comprimento */
+      .penalty-spot {
+        position: absolute; top: 50%;
+        width: 6px; height: 6px; background: #fff; border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .penalty-spot.left  { left: 10.5%; }
+      .penalty-spot.right { left: 89.5%; }
+
+      /* arcos de escanteio (decoração) */
+      .corner-arc {
+        position: absolute; width: 20px; height: 20px;
+        border: 2px solid #fff; border-radius: 50%;
+      }
+      .corner-top-left    { top: 0;    left: 0;    border-right: none; border-bottom: none; border-bottom-right-radius: 0; }
+      .corner-top-right   { top: 0;    right: 0;   border-left: none;  border-bottom: none; border-bottom-left-radius: 0; }
+      .corner-bottom-left { bottom: 0; left: 0;    border-right: none; border-top: none;    border-top-right-radius: 0; }
+      .corner-bottom-right{ bottom: 0; right: 0;   border-left: none;  border-top: none;    border-top-left-radius: 0; }
+
+      /* ===== players ===== */
+      .player, .coach {
+        position: absolute; transform: translate(-50%, -50%);
+        display: flex; align-items: center; justify-content: center; text-align: center;
+        width: 80px; height: 80px; border-radius: 50%; font-size: 10px; font-weight: bold; cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease; z-index: 10;
+        box-shadow: 0 4px 12px rgba(0,0,0,.4), inset 0 2px 4px rgba(255,255,255,.3);
+      }
+      .player { background: radial-gradient(circle, #FFD700, #FFA500); border: 3px solid #FF6B35; color: #333; }
+      .coach  { background: radial-gradient(circle, #8B4513, #A0522D); border: 3px solid #654321; color: #fff; width: 50px; height: 50px; }
+
+      .player:hover, .coach:hover { transform: translate(-50%, -50%) scale(1.15); }
+      .player-name { font-size: 9px; max-width: 38px; word-break: break-word; }
+      .coach-name  { font-size: 8px; max-width: 40px; word-break: break-word; }
+
+      /* ===== legend & table ===== */
+      .position-legend {
+        display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+        margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;
+      }
+      .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
+      .legend-color { width: 12px; height: 12px; border-radius: 50%; background: #FFD700; border: 2px solid #FF6B35; }
+
+      .stats-table { margin-top: 30px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+      th { background: #007bff; color: #fff; }
+
+      .tip { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin-top: 20px; border-radius: 5px; }
+      .tip code { background: #bbdefb; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>⚽ Escartola - Escalação Ótima</h1>
 
-    <div class="meta">
-      <strong>Formação:</strong> {{ formation }} |
+      <div class="meta">
+        <strong>Formação:</strong> {{ formation }} |
         <strong>Budget:</strong> R$ {{ budget }} |
         <strong>Gasto:</strong> R$ {{ spent }} |
-      <strong>Score:</strong> {{ score }} |
-      <strong>Alpha:</strong> {{ alpha }}
-    </div>
+        <strong>Score:</strong> {{ score }} |
+        <strong>Alpha:</strong> {{ alpha }}
+      </div>
 
       <div class="controls-container">
         <form method="GET" class="controls-form">
@@ -539,23 +222,19 @@
               {% endfor %}
             </select>
           </div>
-          
           <div class="form-group">
             <label for="budget">Budget (R$):</label>
             <input type="number" name="budget" id="budget" value="{{ budget }}" min="50" max="200" step="5" class="form-control">
           </div>
-          
           <div class="form-group">
             <label for="alpha">Alpha: <span id="alpha-value">{{ alpha }}</span></label>
             <div class="slider-container">
               <input type="range" name="alpha" id="alpha" min="0" max="1" step="0.1" value="{{ alpha }}" class="slider">
-              <div class="slider-labels">
-                <span>Notas da última rodada</span>
-                <span>Notas constantes</span>
+              <div class="slider-labels" style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-top:6px;">
+                <span>Última rodada</span><span>Médias</span>
               </div>
             </div>
           </div>
-          
           <button type="submit" class="btn-optimize">⚽ Otimizar Time</button>
         </form>
       </div>
@@ -566,30 +245,35 @@
             <div class="center-line"></div>
             <div class="center-circle"></div>
             <div class="center-dot"></div>
-            <div class="goal-area goal-left"></div>
-            <div class="goal-area goal-right"></div>
-            <div class="penalty-area-complete-left"></div>
-            <div class="penalty-area-complete-right"></div>
-            <div class="penalty-spot penalty-spot-left"></div>
-            <div class="penalty-spot penalty-spot-right"></div>
+
+            <!-- Áreas (agora com as linhas verticais internas visíveis) -->
+            <div class="penalty left"></div>
+            <div class="penalty right"></div>
+
+            <div class="goal left"></div>
+            <div class="goal right"></div>
+
+            <div class="penalty-spot left"></div>
+            <div class="penalty-spot right"></div>
+
             <div class="corner-arc corner-top-left"></div>
             <div class="corner-arc corner-top-right"></div>
             <div class="corner-arc corner-bottom-left"></div>
             <div class="corner-arc corner-bottom-right"></div>
           </div>
-          
+
           {% for athlete in team %}
             {% if athlete.position != 'TEC' %}
-            <div class="player" style="left: {{ athlete.field_x }}px; top: {{ athlete.field_y }}px;" title="{{ athlete.name }} - {{ athlete.position }} - R$ {{ athlete.price }}">
-              <div class="player-name">{{ athlete.name|truncatechars:6 }}</div>
+            <div class="player" style="left: {{ athlete.field_x }}%; top: {{ athlete.field_y }}%;" title="{{ athlete.name }} - {{ athlete.position }} - R$ {{ athlete.price }}">
+              <div class="player-name">{{ athlete.surname }}</div>
             </div>
             {% endif %}
           {% endfor %}
-          
+
           {% for athlete in team %}
             {% if athlete.position == 'TEC' %}
-            <div class="coach" style="left: {{ athlete.field_x }}px; top: {{ athlete.field_y }}px;" title="{{ athlete.name }} - Técnico - R$ {{ athlete.price }}">
-              <div class="coach-name">{{ athlete.name|truncatechars:6 }}</div>
+            <div class="coach" style="left: {{ athlete.field_x }}%; top: {{ athlete.field_y }}%;" title="{{ athlete.name }} - Técnico - R$ {{ athlete.price }}">
+              <div class="coach-name">{{ athlete.surname }}</div>
             </div>
             {% endif %}
           {% endfor %}
@@ -597,98 +281,43 @@
       </div>
 
       <div class="position-legend">
-        <div class="legend-item">
-          <div class="legend-color"></div>
-          <span>Jogador</span>
-        </div>
-        <div class="legend-item">
-          <div style="width: 12px; height: 12px; border-radius: 50%; background: #8B4513; border: 2px solid #654321; margin-right: 5px;"></div>
-          <span>Técnico</span>
-        </div>
-        <div class="legend-item">
-          <span>Posição: Nome do Jogador</span>
-        </div>
+        <div class="legend-item"><div class="legend-color"></div><span>Jogador</span></div>
+        <div class="legend-item"><div style="width:12px;height:12px;border-radius:50%;background:#8B4513;border:2px solid #654321;"></div><span>Técnico</span></div>
+        <div class="legend-item"><span>Posição: Nome do Jogador</span></div>
       </div>
 
       <div class="stats-table">
-    <table>
-      <thead>
-        <tr>
-          <th>Posição</th>
-          <th>Nome</th>
-          <th>Preço</th>
-              <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
+        <table>
+          <thead>
+            <tr><th>Posição</th><th>Nome</th><th>Preço</th><th>Score</th></tr>
+          </thead>
+          <tbody>
             {% for athlete in team %}
             <tr>
               <td><strong>{{ athlete.position }}</strong></td>
               <td>{{ athlete.name }}</td>
               <td>R$ {{ athlete.price }}</td>
               <td>{{ athlete.score }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
 
-
       <div class="tip">
-        <strong>💡 Dica:</strong> Passe o mouse sobre os jogadores no campo para ver mais detalhes. 
-        <br><strong>Como usar:</strong> Use o formulário acima para ajustar a formação, budget e alpha. 
-        <br><strong>Alpha:</strong> 0 = prioriza notas da última rodada, 1 = prioriza notas constantes.
-        <br><strong>Formações disponíveis:</strong> 
-        {% for formation in available_formations %}
-          <code>{{ formation }}</code>{% if not forloop.last %}, {% endif %}
-        {% endfor %}
+        <strong>💡 Dica:</strong> Passe o mouse sobre os jogadores no campo para ver mais detalhes.
+        <br><strong>Como usar:</strong> Use o formulário acima para ajustar a formação, budget e alpha.
+        <br><strong>Formações disponíveis:</strong>
+        {% for f in available_formations %}<code>{{ f }}</code>{% if not forloop.last %}, {% endif %}{% endfor %}
       </div>
     </div>
 
     <script>
-      // As coordenadas já vêm calculadas do backend via {{ athlete.field_x }} e {{ athlete.field_y }}
-      // Não precisamos recalcular no JavaScript
       document.addEventListener('DOMContentLoaded', function() {
-        // Apenas posicionar o técnico fora do campo se necessário
-        const coaches = document.querySelectorAll('.coach');
-        coaches.forEach((coach, index) => {
-          // As coordenadas do técnico já vêm do backend, mas podemos ajustar se necessário
-          if (coach.style.left === '' || coach.style.left === '0px') {
-            coach.style.left = '30px';
-            coach.style.top = '30px';
-          }
-        });
-        
-        // Atualizar valor do alpha em tempo real
         const alphaSlider = document.getElementById('alpha');
-        const alphaValue = document.getElementById('alpha-value');
-        
+        const alphaValue  = document.getElementById('alpha-value');
         if (alphaSlider && alphaValue) {
-          alphaSlider.addEventListener('input', function() {
-            alphaValue.textContent = this.value;
-          });
-        }
-        
-        // Adicionar validação ao formulário
-        const form = document.querySelector('.controls-form');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            const budget = document.getElementById('budget').value;
-            const alpha = document.getElementById('alpha').value;
-            
-            // Validações básicas
-            if (budget < 50 || budget > 200) {
-              alert('Budget deve estar entre R$ 50 e R$ 200');
-              e.preventDefault();
-              return;
-            }
-            
-            if (alpha < 0 || alpha > 1) {
-              alert('Alpha deve estar entre 0 e 1');
-              e.preventDefault();
-              return;
-            }
-          });
+          alphaSlider.addEventListener('input', () => alphaValue.textContent = alphaSlider.value);
         }
       });
     </script>

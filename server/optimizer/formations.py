@@ -17,72 +17,72 @@ def get_formation_config(formation):
     formations = {
         '3-4-3': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 150},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 180},
-                'ATA': {'x': 620, 'y': 120}
+                'GOL': {'x': 7, 'y': 50},      # 7% da largura, 50% da altura
+                'ZAG': {'x': 23, 'y': 30},     # 23% da largura, 30% da altura
+                'LAT': {'x': 24, 'y': 24},     # 24% da largura, 24% da altura
+                'MEI': {'x': 50, 'y': 36},     # 50% da largura, 36% da altura
+                'ATA': {'x': 89, 'y': 24}      # 89% da largura, 24% da altura
             },
             'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA', 'ATA']
         },
         '3-5-2': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 150},
-                'MEI': {'x': 350, 'y': 150},
-                'ATA': {'x': 620, 'y': 200}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 30},
+                'MEI': {'x': 50, 'y': 30},
+                'ATA': {'x': 89, 'y': 40}
             },
             'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'MEI', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA']
         },
         '4-3-3': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 200},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 180},
-                'ATA': {'x': 620, 'y': 120}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 40},
+                'LAT': {'x': 24, 'y': 24},
+                'MEI': {'x': 50, 'y': 36},
+                'ATA': {'x': 89, 'y': 24}
             },
             'positions': ['GOL', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA', 'ATA']
         },
         '4-4-2': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 200},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 200},
-                'ATA': {'x': 620, 'y': 200}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 40},
+                'LAT': {'x': 24, 'y': 24},
+                'MEI': {'x': 50, 'y': 40},
+                'ATA': {'x': 89, 'y': 40}
             },
             'positions': ['GOL', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA']
         },
         '4-5-1': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 200},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 180},
-                'ATA': {'x': 620, 'y': 250}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 40},
+                'LAT': {'x': 24, 'y': 24},
+                'MEI': {'x': 50, 'y': 36},
+                'ATA': {'x': 89, 'y': 50}
             },
             'positions': ['GOL', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA']
         },
         '5-3-2': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 150},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 200},
-                'ATA': {'x': 620, 'y': 200}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 30},
+                'LAT': {'x': 24, 'y': 24},
+                'MEI': {'x': 50, 'y': 40},
+                'ATA': {'x': 89, 'y': 40}
             },
-            'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA']
+            'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA']
         },
         '5-4-1': {
             'coords': {
-                'GOL': {'x': 50, 'y': 250},
-                'ZAG': {'x': 160, 'y': 150},
-                'LAT': {'x': 170, 'y': 120},
-                'MEI': {'x': 350, 'y': 200},
-                'ATA': {'x': 620, 'y': 250}
+                'GOL': {'x': 7, 'y': 50},
+                'ZAG': {'x': 23, 'y': 30},
+                'LAT': {'x': 24, 'y': 24},
+                'MEI': {'x': 50, 'y': 40},
+                'ATA': {'x': 89, 'y': 50}
             },
-            'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA']
+            'positions': ['GOL', 'ZAG', 'ZAG', 'ZAG', 'LAT', 'LAT', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA']
         }
     }
     
@@ -92,6 +92,7 @@ def get_formation_config(formation):
 def get_position_coords(position, position_count, formation):
     """
     Retorna coordenadas específicas para múltiplos jogadores da mesma posição
+    Usa porcentagem do campo (0-100%)
     
     Args:
         position (str): Posição do jogador (GOL, ZAG, LAT, MEI, ATA)
@@ -99,135 +100,144 @@ def get_position_coords(position, position_count, formation):
         formation (str): Formação tática
     
     Returns:
-        dict: Coordenadas x, y para o jogador
+        dict: Coordenadas x, y em porcentagem para o jogador
     """
     
-    base_coords = {'x': 50, 'y': 250}  # Coordenada padrão
+    base_coords = {'x': 10, 'y': 50}  
     
     if position == 'ZAG':
-        if formation == '3-5-2':
+        if formation in ['3-5-2', '3-4-3']:
             if position_count == 0:
-                base_coords = {'x': 190, 'y': 180}
+                base_coords = {'x': 27, 'y': 30}
             elif position_count == 1:
-                base_coords = {'x': 190, 'y': 250}
+                base_coords = {'x': 27, 'y': 50}
             elif position_count == 2:
-                base_coords = {'x': 190, 'y': 320}
+                base_coords = {'x': 27, 'y': 70}
         elif formation in ['5-3-2', '5-4-1']:
             if position_count == 0:
-                base_coords = {'x': 190, 'y': 120}
+                base_coords = {'x': 27, 'y': 30}
             elif position_count == 1:
-                base_coords = {'x': 190, 'y': 200}
+                base_coords = {'x': 27, 'y': 50}
             elif position_count == 2:
-                base_coords = {'x': 190, 'y': 250}
-            elif position_count == 3:
-                base_coords = {'x': 190, 'y': 300}
-            elif position_count == 4:
-                base_coords = {'x': 190, 'y': 380}
-        else:  # 3-4-3, 4-3-3, 4-4-2, 4-5-1
+                base_coords = {'x': 27, 'y': 70}
+        else:  #4-3-3, 4-4-2, 4-5-1
             if position_count == 0:
-                base_coords = {'x': 190, 'y': 200}
+                base_coords = {'x': 27, 'y': 40}
             elif position_count == 1:
-                base_coords = {'x': 190, 'y': 300}
+                base_coords = {'x': 27, 'y': 60}
                 
     elif position == 'LAT':
-        if position_count == 0:
-            base_coords = {'x': 220, 'y': 120}
-        elif position_count == 1:
-            base_coords = {'x': 220, 'y': 380}
+        if formation in ['5-3-2', '5-4-1']:
+            if position_count == 0:
+                base_coords = {'x': 31, 'y': 10}
+            elif position_count == 1:
+                base_coords = {'x': 31, 'y': 90}
+        else:
+            if position_count == 0:
+                base_coords = {'x': 31, 'y': 24}
+            elif position_count == 1:
+                base_coords = {'x': 31, 'y': 76}
             
     elif position == 'MEI':
         if formation == '4-3-3':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 180}
+                base_coords = {'x': 57, 'y': 30}
             elif position_count == 1:
-                base_coords = {'x': 380, 'y': 250}
+                base_coords = {'x': 54, 'y': 50}
             elif position_count == 2:
-                base_coords = {'x': 400, 'y': 320}
+                base_coords = {'x': 57, 'y': 70}
         elif formation == '4-4-2':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 120}
+                base_coords = {'x': 57, 'y': 24}
             elif position_count == 1:
-                base_coords = {'x': 380, 'y': 200}
+                base_coords = {'x': 54, 'y': 40}
             elif position_count == 2:
-                base_coords = {'x': 380, 'y': 300}
+                base_coords = {'x': 54, 'y': 60}
             elif position_count == 3:
-                base_coords = {'x': 400, 'y': 380}
+                base_coords = {'x': 57, 'y': 76}
         elif formation == '4-5-1':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 100}
+                base_coords = {'x': 57, 'y': 10}
             elif position_count == 1:
-                base_coords = {'x': 380, 'y': 180}
+                base_coords = {'x': 50, 'y': 30}
             elif position_count == 2:
-                base_coords = {'x': 380, 'y': 250}
+                base_coords = {'x': 50, 'y': 50}
             elif position_count == 3:
-                base_coords = {'x': 380, 'y': 320}
+                base_coords = {'x': 50, 'y': 70}
             elif position_count == 4:
-                base_coords = {'x': 400, 'y': 400}
+                base_coords = {'x': 57, 'y': 90}
         elif formation == '3-5-2':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 50}
+                base_coords = {'x': 57, 'y': 10}
             elif position_count == 1:
-                base_coords = {'x': 350, 'y': 150}
+                base_coords = {'x': 50, 'y': 30}
             elif position_count == 2:
-                base_coords = {'x': 350, 'y': 250}
+                base_coords = {'x': 50, 'y': 50}
             elif position_count == 3:
-                base_coords = {'x': 350, 'y': 350}
+                base_coords = {'x': 50, 'y': 70}
             elif position_count == 4:
-                base_coords = {'x': 400, 'y': 450}
+                base_coords = {'x': 57, 'y': 90}
         elif formation == '3-4-3':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 120}
+                base_coords = {'x': 57, 'y': 24}
             elif position_count == 1:
-                base_coords = {'x': 380, 'y': 200}
+                base_coords = {'x': 54, 'y': 40}
             elif position_count == 2:
-                base_coords = {'x': 380, 'y': 300}
+                base_coords = {'x': 54, 'y': 60}
             elif position_count == 3:
-                base_coords = {'x': 400, 'y': 380}
-        elif formation in ['5-3-2', '5-4-1']:
+                base_coords = {'x': 57, 'y': 76}
+        elif formation == '5-4-1':
             if position_count == 0:
-                base_coords = {'x': 400, 'y': 150}
+                base_coords = {'x': 57, 'y': 30}
             elif position_count == 1:
-                base_coords = {'x': 380, 'y': 220}
+                base_coords = {'x': 54, 'y': 44}
             elif position_count == 2:
-                base_coords = {'x': 380, 'y': 280}
+                base_coords = {'x': 54, 'y': 56}
             elif position_count == 3:
-                base_coords = {'x': 400, 'y': 350}
-            elif formation == '5-4-1' and position_count == 4:
-                base_coords = {'x': 400, 'y': 450}
+                base_coords = {'x': 57, 'y': 70}
+            elif position_count == 4:
+                base_coords = {'x': 57, 'y': 90}
+        elif formation == '5-3-2':
+            if position_count == 0:
+                base_coords = {'x': 57, 'y': 25}
+            elif position_count == 1:
+                base_coords = {'x': 50, 'y': 50}
+            elif position_count == 2:
+                base_coords = {'x': 57, 'y': 75}
                 
     elif position == 'ATA':
         if formation == '4-3-3':
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 120}
+                base_coords = {'x': 89, 'y': 24}
             elif position_count == 1:
-                base_coords = {'x': 620, 'y': 250}
+                base_coords = {'x': 89, 'y': 50}
             elif position_count == 2:
-                base_coords = {'x': 620, 'y': 380}
+                base_coords = {'x': 89, 'y': 76}
         elif formation == '4-4-2':
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 180}
+                base_coords = {'x': 89, 'y': 36}
             elif position_count == 1:
-                base_coords = {'x': 620, 'y': 320}
+                base_coords = {'x': 89, 'y': 64}
         elif formation == '4-5-1':
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 250}
+                base_coords = {'x': 89, 'y': 50}
         elif formation == '3-5-2':
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 180}
+                base_coords = {'x': 89, 'y': 36}
             elif position_count == 1:
-                base_coords = {'x': 620, 'y': 320}
+                base_coords = {'x': 89, 'y': 64}
         elif formation == '3-4-3':
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 120}
+                base_coords = {'x': 89, 'y': 24}
             elif position_count == 1:
-                base_coords = {'x': 620, 'y': 250}
+                base_coords = {'x': 89, 'y': 50}
             elif position_count == 2:
-                base_coords = {'x': 620, 'y': 380}
+                base_coords = {'x': 89, 'y': 76}
         elif formation in ['5-3-2', '5-4-1']:
             if position_count == 0:
-                base_coords = {'x': 620, 'y': 200}
+                base_coords = {'x': 89, 'y': 40}
             elif formation == '5-3-2' and position_count == 1:
-                base_coords = {'x': 620, 'y': 300}
+                base_coords = {'x': 89, 'y': 60}
     
     return base_coords
 

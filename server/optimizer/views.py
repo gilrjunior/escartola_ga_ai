@@ -1,17 +1,41 @@
 from django.shortcuts import render
 from django.http import HttpResponseServerError
 from .formations import get_formation_config, get_position_coords, get_available_formations
+from escartola.services.cartola_services import fecth_team_formations
+
+def map_cartola_formation_to_standard(cartola_formations):
+    """
+    Mapeia formações do Cartola para o formato padrão usado no sistema
+    """
+    formation_mapping = {
+        '3-4-3': '3-4-3',
+        '3-5-2': '3-5-2', 
+        '4-3-3': '4-3-3',
+        '4-4-2': '4-4-2',
+        '4-5-1': '4-5-1',
+        '5-3-2': '5-3-2',
+        '5-4-1': '5-4-1'
+    }
+    
+    mapped_formations = []
+    for formation in cartola_formations:
+        formation_name = formation['name']
+        if formation_name in formation_mapping:
+            mapped_formations.append(formation_mapping[formation_name])
+    
+    return mapped_formations
 
 def add_field_coordinates(team, formation):
     """
     Adiciona coordenadas de campo para cada atleta baseado na formação tática
+    Usa porcentagem do campo (0-100%)
     """
     # Adicionar coordenadas para cada atleta
     for i, athlete in enumerate(team):
         if athlete.position == 'TEC':
             # Técnico fica fora do campo (canto superior esquerdo)
-            athlete.field_x = 30
-            athlete.field_y = 30
+            athlete.field_x = 5  # 5% da largura
+            athlete.field_y = 5  # 5% da altura
         else:
             # Contar quantos jogadores da mesma posição já foram processados
             position_count = 0
@@ -21,7 +45,7 @@ def add_field_coordinates(team, formation):
             
             # Obter coordenadas base da formação
             formation_config = get_formation_config(formation)
-            base_coords = formation_config['coords'].get(athlete.position, {'x': 350, 'y': 250})
+            base_coords = formation_config['coords'].get(athlete.position, {'x': 50, 'y': 50})
             
             # Ajustar coordenadas para múltiplos jogadores da mesma posição
             specific_coords = get_position_coords(athlete.position, position_count, formation)
@@ -42,10 +66,20 @@ def best_team_view(request):
         alpha = float(request.GET.get("alpha", 0.6))
         formation_name = request.GET.get("formation", "4-3-3")
         
+        # Buscar formações do Cartola
+        try:
+            cartola_formations = fecth_team_formations()
+            available_formations = map_cartola_formation_to_standard(cartola_formations)
+            if not available_formations:  # Se não encontrou formações válidas
+                available_formations = get_available_formations()
+        except Exception as e:
+            print(f"Erro ao buscar formações do Cartola: {e}")
+            # Fallback para formações hardcoded
+            available_formations = get_available_formations()
+        
         # Validar formação
-        available_formations = get_available_formations()
         if formation_name not in available_formations:
-            formation_name = "4-3-3"  # Default se formação inválida
+            formation_name = available_formations[0] if available_formations else "4-3-3"
 
         # 2) importar seu código já pronto (ajuste os caminhos conforme sua árvore)
         from escartola.genetic_algorithm.GeneticAlgorithm import GeneticAlgorithm

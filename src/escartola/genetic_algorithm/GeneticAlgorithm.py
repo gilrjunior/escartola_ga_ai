@@ -61,7 +61,12 @@ class GeneticAlgorithm:
                 database_by_position = [athlete for athlete in self.database if athlete.position == position['position'] and athlete.status == "Provável"]
 
                 for _ in range(position['quantity']):
+
                     athlete = random.choice(database_by_position)
+
+                    while team.check_if_athlete_is_in_team(athlete):
+                        athlete = random.choice(database_by_position)
+
                     team.add_athlete(athlete)
 
             current_population.append(team)
