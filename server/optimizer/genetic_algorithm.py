@@ -1,12 +1,12 @@
 import numpy as np
-from models.team.Team import Team
-import services.cartola_services as cartola_services
+from optimizer.classes.Team import Team
+import optimizer.cartola_services as cartola_services
 import random
 import sys
 
 class GeneticAlgorithm:
-    def __init__(self, population_size=500, mutation_rate=0.2, crossover_rate=0.75, elitism_count = 2,
-                 selection_method='roulette', tournament_size=4, budget = 100, alpha = 0.5, crossover_type='one_point', team_formation='4-3-3'):
+    def __init__(self, population_size=500, mutation_rate=0.2, crossover_rate=0.75, elitism_count = 4,
+                 selection_method='roulette', tournament_size=4, budget = 100.0, alpha = 0.2, crossover_type='one_point', team_formation='4-3-3'):
 
         """
         Inicializa o algoritmo genético.
@@ -61,7 +61,12 @@ class GeneticAlgorithm:
                 database_by_position = [athlete for athlete in self.database if athlete.position == position['position'] and athlete.status == "Provável"]
 
                 for _ in range(position['quantity']):
+
                     athlete = random.choice(database_by_position)
+
+                    while team.check_if_athlete_is_in_team(athlete):
+                        athlete = random.choice(database_by_position)
+
                     team.add_athlete(athlete)
 
             current_population.append(team)
