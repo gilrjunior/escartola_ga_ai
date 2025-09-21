@@ -1,6 +1,6 @@
 import numpy as np
-from escartola.models.team.Team import Team
-import escartola.services.cartola_services as cartola_services
+from optimizer.classes.Team import Team
+import optimizer.cartola_services as cartola_services
 import random
 import sys
 

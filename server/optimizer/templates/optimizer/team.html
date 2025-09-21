@@ -1,8 +1,14 @@
+{% load static %}
 <!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
     <title>Escartola - Escalação Ótima</title>
+    <link rel="icon" type="image/png" href="{% static 'logo.png' %}" sizes="16x16 32x32 48x48">
+    <link rel="shortcut icon" href="{% static 'logo.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'logo.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'logo.png' %}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{% static 'logo.png' %}">
     <style>
       /* ===== reset & helpers ===== */
       *, *::before, *::after { box-sizing: border-box; }
@@ -10,35 +16,93 @@
       body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 20px;
+        padding: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
 
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
+      .main-container {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
         background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       }
+
+      .left-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: #f8f9fa;
+        gap: 20px;
+      }
+
+      .right-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        overflow: hidden;
+      }
+
+      .right-top {
+        padding: 15px 20px;
+        border-bottom: 2px solid #e9ecef;
+        flex-shrink: 0;
+      }
+
+      .right-bottom {
+        flex: 1;
+        padding: 15px 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 15px;
+      }
+
+      .logo {
+        width: 120px;
+        height: 120px;
+        background-image: url('{% static "logo.png" %}');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
 
       h1 {
         text-align: center;
         color: #333;
-        margin-bottom: 20px;
-        font-size: 2.5em;
+        margin-bottom: 30px;
+        font-size: 2.2em;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
       }
 
       .meta {
         background: #f8f9fa;
-        padding: 15px;
+        padding: 12px;
         border-radius: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         text-align: center;
         border-left: 5px solid #007bff;
+        font-size: 14px;
       }
       .meta strong { color: #007bff; margin: 0 10px; }
 
@@ -46,8 +110,8 @@
       .controls-container {
         background: #f8f9fa;
         border-radius: 15px;
-        padding: 25px;
-        margin: 20px 0;
+        padding: 15px;
+        margin: 0;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         border: 2px solid #e9ecef;
       }
@@ -86,12 +150,18 @@
       }
 
       /* ===== field ===== */
-      .field-container { display: flex; justify-content: center; margin: 30px 0; }
+      .field-container { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
 
       .football-field {
         /* proporção oficial: 105m x 68m */
         aspect-ratio: 105 / 68;
-        width: min(95vw, 900px);
+        width: min(95%, 800px);
         height: auto;
         background: linear-gradient(45deg, #4CAF50, #45a049);
         border: 6px solid #2E7D32;
@@ -99,7 +169,6 @@
         position: relative;
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         overflow: hidden;
-        margin: 0 auto;
       }
 
       .field-lines { position: absolute; inset: 0; pointer-events: none; }
@@ -186,81 +255,108 @@
       /* ===== legend & table ===== */
       .position-legend {
         display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
-        margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 10px;
+        padding: 15px; background: #f8f9fa; border-radius: 10px;
+        width: 100%;
+        max-width: 800px;
       }
       .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; }
       .legend-color { width: 12px; height: 12px; border-radius: 50%; background: #FFD700; border: 2px solid #FF6B35; }
 
-      .stats-table { margin-top: 30px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-      table { border-collapse: collapse; width: 100%; }
-      th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-      th { background: #007bff; color: #fff; }
+      .stats-table { 
+        background: #fff; 
+        border-radius: 10px; 
+        overflow: hidden; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      table { 
+        border-collapse: collapse; 
+        width: 100%; 
+        height: 100%;
+        display: block;
+        overflow: hidden;
+      }
+      thead, tbody {
+        display: block;
+        width: 100%;
+      }
+      thead {
+        background: #007bff;
+        color: #fff;
+      }
+      tbody {
+        overflow: hidden;
+        height: 100%;
+      }
+      tr {
+        display: flex;
+        width: 100%;
+      }
+      th, td { 
+        padding: 8px; 
+        text-align: left; 
+        border-bottom: 1px solid #ddd; 
+        display: flex;
+        align-items: center;
+      }
+      
+      th:nth-child(1), td:nth-child(1) { flex: 0.8; } /* Posição */
+      th:nth-child(2), td:nth-child(2) { flex: 2.5; } /* Nome - maior */
+      th:nth-child(3), td:nth-child(3) { flex: 0.8; } /* Preço - menor */
+      th:nth-child(4), td:nth-child(4) { flex: 0.8; } /* Score - menor */
+      th { 
+        background: #007bff; 
+        color: #fff; 
+        font-weight: bold;
+      }
 
-      .tip { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin-top: 20px; border-radius: 5px; }
+      .tip { 
+        background: #e3f2fd; 
+        border-left: 4px solid #2196f3; 
+        padding: 10px 15px; 
+        border-radius: 5px; 
+        font-size: 12px;
+        flex-shrink: 0;
+      }
       .tip code { background: #bbdefb; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+
+      /* Responsive adjustments */
+      @media (max-width: 1200px) {
+        .main-container { flex-direction: column; height: auto; }
+        .left-panel { min-height: 50vh; }
+        .right-panel { min-height: 50vh; }
+        .football-field { width: min(95%, 500px); }
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>⚽ Escartola - Escalação Ótima</h1>
+    <div class="main-container">
+      <!-- Lado esquerdo - Campo -->
+      <div class="left-panel">
+        <div class="field-container">
+          <div class="football-field">
+            <div class="field-lines">
+              <div class="center-line"></div>
+              <div class="center-circle"></div>
+              <div class="center-dot"></div>
 
-      <div class="meta">
-        <strong>Formação:</strong> {{ formation }} |
-        <strong>Budget:</strong> R$ {{ budget }} |
-        <strong>Gasto:</strong> R$ {{ spent }} |
-        <strong>Score:</strong> {{ score }} |
-        <strong>Alpha:</strong> {{ alpha }}
-      </div>
+              <!-- Áreas (agora com as linhas verticais internas visíveis) -->
+              <div class="penalty left"></div>
+              <div class="penalty right"></div>
 
-      <div class="controls-container">
-        <form method="GET" class="controls-form">
-          <div class="form-group">
-            <label for="formation">Formação Tática:</label>
-            <select name="formation" id="formation" class="form-control">
-              {% for form in available_formations %}
-                <option value="{{ form }}" {% if form == formation %}selected{% endif %}>{{ form }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="budget">Budget (R$):</label>
-            <input type="number" name="budget" id="budget" value="{{ budget }}" min="50" max="200" step="5" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="alpha">Alpha: <span id="alpha-value">{{ alpha }}</span></label>
-            <div class="slider-container">
-              <input type="range" name="alpha" id="alpha" min="0" max="1" step="0.1" value="{{ alpha }}" class="slider">
-              <div class="slider-labels" style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-top:6px;">
-                <span>Última rodada</span><span>Médias</span>
-              </div>
+              <div class="goal left"></div>
+              <div class="goal right"></div>
+
+              <div class="penalty-spot left"></div>
+              <div class="penalty-spot right"></div>
+
+              <div class="corner-arc corner-top-left"></div>
+              <div class="corner-arc corner-top-right"></div>
+              <div class="corner-arc corner-bottom-left"></div>
+              <div class="corner-arc corner-bottom-right"></div>
             </div>
-          </div>
-          <button type="submit" class="btn-optimize">⚽ Otimizar Time</button>
-        </form>
-      </div>
-
-      <div class="field-container">
-        <div class="football-field">
-          <div class="field-lines">
-            <div class="center-line"></div>
-            <div class="center-circle"></div>
-            <div class="center-dot"></div>
-
-            <!-- Áreas (agora com as linhas verticais internas visíveis) -->
-            <div class="penalty left"></div>
-            <div class="penalty right"></div>
-
-            <div class="goal left"></div>
-            <div class="goal right"></div>
-
-            <div class="penalty-spot left"></div>
-            <div class="penalty-spot right"></div>
-
-            <div class="corner-arc corner-top-left"></div>
-            <div class="corner-arc corner-top-right"></div>
-            <div class="corner-arc corner-bottom-left"></div>
-            <div class="corner-arc corner-bottom-right"></div>
-          </div>
 
           {% for athlete in team %}
             {% if athlete.position != 'TEC' %}
@@ -277,38 +373,91 @@
             </div>
             {% endif %}
           {% endfor %}
+          </div>
+        </div>
+        
+        <div class="position-legend">
+          <div class="legend-item"><div class="legend-color"></div><span>Jogador</span></div>
+          <div class="legend-item"><div style="width:12px;height:12px;border-radius:50%;background:#8B4513;border:2px solid #654321;"></div><span>Técnico</span></div>
+          <div class="legend-item"><span>Posição: Nome do Jogador</span></div>
         </div>
       </div>
 
-      <div class="position-legend">
-        <div class="legend-item"><div class="legend-color"></div><span>Jogador</span></div>
-        <div class="legend-item"><div style="width:12px;height:12px;border-radius:50%;background:#8B4513;border:2px solid #654321;"></div><span>Técnico</span></div>
-        <div class="legend-item"><span>Posição: Nome do Jogador</span></div>
-      </div>
+      <!-- Lado direito - Controles e Tabela -->
+      <div class="right-panel">
+        <!-- Parte superior - Título e Controles -->
+        <div class="right-top">
+          <div class="logo-container">
+            <div class="logo"></div>
+          </div>
 
-      <div class="stats-table">
-        <table>
-          <thead>
-            <tr><th>Posição</th><th>Nome</th><th>Preço</th><th>Score</th></tr>
-          </thead>
-          <tbody>
-            {% for athlete in team %}
-            <tr>
-              <td><strong>{{ athlete.position }}</strong></td>
-              <td>{{ athlete.name }}</td>
-              <td>R$ {{ athlete.price }}</td>
-              <td>{{ athlete.score }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+          <div class="meta">
+            <div>
+              <strong>Formação:</strong> {{ formation }} |
+              <strong>Dinheiro Disponível:</strong> R$ {{ budget }} |
+              <strong>Gasto com a escalação:</strong> R$ {{ spent }} |
+            </div>
+            <div>
+              <strong>Pontuação da última rodada:</strong> {{ score }} |
+              <strong>Fator de Importância:</strong> {{ alpha }}
+            </div>
+          </div>
 
-      <div class="tip">
-        <strong>💡 Dica:</strong> Passe o mouse sobre os jogadores no campo para ver mais detalhes.
-        <br><strong>Como usar:</strong> Use o formulário acima para ajustar a formação, budget e alpha.
-        <br><strong>Formações disponíveis:</strong>
-        {% for f in available_formations %}<code>{{ f }}</code>{% if not forloop.last %}, {% endif %}{% endfor %}
+          <div class="controls-container">
+            <form method="GET" class="controls-form">
+              <div class="form-group">
+                <label for="formation">Formação Tática:</label>
+                <select name="formation" id="formation" class="form-control">
+                  {% for form in available_formations %}
+                    <option value="{{ form }}" {% if form == formation %}selected{% endif %}>{{ form }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="budget">Dinheiro Disponível (R$):</label>
+                <input type="number" name="budget" id="budget" value="{{ budget|default:110 }}" min="50" max="200" step="5" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="alpha">Fator de Importância: <span id="alpha-value">{{ alpha }}</span></label>
+                <div class="slider-container">
+                  <input type="range" name="alpha" id="alpha" min="0" max="1" step="0.1" value="{{ alpha }}" class="slider">
+                  <div class="slider-labels" style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-top:6px;">
+                    <span>Última rodada</span><span>Médias</span>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn-optimize">⚽ Otimizar Time</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Parte inferior - Tabela e Informações -->
+        <div class="right-bottom">
+          <div class="stats-table">
+            <table>
+              <thead>
+                <tr><th>Posição</th><th>Nome</th><th>Preço</th><th>Score</th></tr>
+              </thead>
+              <tbody>
+                {% for athlete in team %}
+                <tr>
+                  <td><strong>{{ athlete.position }}</strong></td>
+                  <td>{{ athlete.name }}</td>
+                  <td>R$ {{ athlete.price }}</td>
+                  <td>{{ athlete.score }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tip">
+            <strong>💡 Dica:</strong> Passe o mouse sobre os jogadores no campo para ver mais detalhes.
+            <br><strong>Como usar:</strong> Use o formulário acima para ajustar a formação, budget e alpha.
+            <br><strong>Formações disponíveis:</strong>
+            {% for f in available_formations %}<code>{{ f }}</code>{% if not forloop.last %}, {% endif %}{% endfor %}
+          </div>
+        </div>
       </div>
     </div>
 

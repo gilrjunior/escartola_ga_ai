@@ -16,13 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from django.contrib import admin
-from django.urls import path
-from optimizer.views import best_team_view
+from optimizer.views import home, best_team_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", best_team_view, name="home"),  # página principal já mostra a escalação
+    path("", home, name="home"),  # Landing page inicial
+    path("team/", best_team_view, name="team"),  # Página de otimização
 ]
 

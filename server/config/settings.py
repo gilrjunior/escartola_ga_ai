@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'optimizer.middleware.ForcePortugueseMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -102,19 +103,40 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
 USE_TZ = True
+
+# Configurações de idioma para evitar detecção automática
+USE_L10N = True
+LOCALE_PATHS = []
+
+# Forçar idioma português brasileiro
+LANGUAGES = [
+    ('pt-br', 'Português (Brasil)'),
+]
+
+# Desabilitar detecção automática de idioma
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 semana
+LANGUAGE_COOKIE_DOMAIN = None
+LANGUAGE_COOKIE_HTTPONLY = False
+LANGUAGE_COOKIE_PATH = '/'
+LANGUAGE_COOKIE_SAMESITE = 'Lax'
+LANGUAGE_COOKIE_SECURE = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "config" / "public",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

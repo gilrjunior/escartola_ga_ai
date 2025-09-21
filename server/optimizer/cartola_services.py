@@ -1,5 +1,5 @@
 import requests
-from escartola.models.athlete.Athlete import Athlete
+from optimizer.classes.Athlete import Athlete
 from dotenv import load_dotenv # type: ignore
 import os
 

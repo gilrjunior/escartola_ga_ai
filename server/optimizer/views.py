@@ -1,7 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponseServerError
 from .formations import get_formation_config, get_position_coords, get_available_formations
-from escartola.services.cartola_services import fecth_team_formations
+from optimizer.cartola_services import fecth_team_formations
+
+def home(request):
+    """
+    Página inicial do Escartola - Landing page
+    """
+    return render(request, "optimizer/home.html")
 
 def map_cartola_formation_to_standard(cartola_formations):
     """
@@ -82,7 +88,7 @@ def best_team_view(request):
             formation_name = available_formations[0] if available_formations else "4-3-3"
 
         # 2) importar seu código já pronto (ajuste os caminhos conforme sua árvore)
-        from escartola.genetic_algorithm.GeneticAlgorithm import GeneticAlgorithm
+        from optimizer.genetic_algorithm import GeneticAlgorithm
 
         # 3) rodar seu GA (exemplo genérico: adapte assinatura ao seu)
         ga = GeneticAlgorithm(budget=budget, alpha=alpha, team_formation=formation_name)
@@ -103,8 +109,8 @@ def best_team_view(request):
 
         ctx = {
             "team": team,
-            "budget": budget,
-            "spent": total_cost,
+            "budget": int(budget),  
+            "spent": round(total_cost, 2),
             "score": round(total_score, 2),
             "alpha": alpha,
             "one_minus_alpha": 1 - alpha,
