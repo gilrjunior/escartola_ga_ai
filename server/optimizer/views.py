@@ -1,13 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseServerError
+from django.http import Http404
+from django.contrib import messages
 from .formations import get_formation_config, get_position_coords, get_available_formations
-from optimizer.cartola_services import fecth_team_formations
+from optimizer.cartola_services import fecth_team_formations, check_market_status
 
 def home(request):
     """
     Página inicial do Escartola - Landing page
     """
-    return render(request, "optimizer/home.html")
+    # Verificar status do mercado
+    market_status = check_market_status()
+    
+    context = {
+        'market_status': market_status
+    }
+    
+    return render(request, "optimizer/home.html", context)
 
 def map_cartola_formation_to_standard(cartola_formations):
     """
@@ -66,6 +75,14 @@ def best_team_view(request):
     Lê parâmetros simples da querystring (opcional),
     chama seu GA (em src/escartola/...) e renderiza a escalação.
     """
+    # Verificar status do mercado antes de permitir otimização
+    market_status = check_market_status()
+    
+    # Se mercado fechado, redirecionar para home com mensagem
+    if not market_status['is_open']:
+        messages.warning(request, market_status['message'])
+        return redirect('home')
+    
     try:
         # 1) parâmetros (pode vir da URL ou usar defaults)
         budget = float(request.GET.get("budget", 110))
@@ -124,4 +141,21 @@ def best_team_view(request):
         # logaria o erro de verdade; aqui só mostra
         print(f"Erro ao otimizar: {e}")
         return HttpResponseServerError(f"Erro ao otimizar: {e}")
+
+def custom_404(request, exception=None):
+    """
+    View personalizada para erro 404
+    Captura qualquer URL que não corresponda às rotas definidas
+    """
+    # Lista de URLs válidas
+    valid_paths = ['/', '/admin/', '/team/']
+    
+    # Se a URL atual não está na lista de válidas, mostra 404
+    if request.path not in valid_paths:
+        return render(request, 'optimizer/404.html', status=404)
+    
+    # Se chegou aqui, é uma URL válida mas não deveria estar aqui
+    # Redireciona para home
+    from django.shortcuts import redirect
+    return redirect('home')
 

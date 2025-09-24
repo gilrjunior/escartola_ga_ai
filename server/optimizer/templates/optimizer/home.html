@@ -74,6 +74,100 @@
     white-space:nowrap;
   }
   .cta:hover{ transform:translateY(-1px); box-shadow:0 14px 30px rgba(27,94,32,.45);}
+  .cta:disabled,
+  .cta.disabled{ 
+    background: #6c757d; 
+    cursor: not-allowed; 
+    transform: none; 
+    box-shadow: 0 10px 24px rgba(0,0,0,.2);
+  }
+  .cta.disabled:hover {
+    transform: none;
+    box-shadow: 0 10px 24px rgba(0,0,0,.2);
+  }
+  .cta.loading{ 
+    position: relative; 
+    color: transparent; 
+    background: linear-gradient(45deg, #2E7D32, #388E3C);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .cta.loading::after{
+    content: "⏳ Carregando...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 800;
+    animation: fadeInOut 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: translateY(-1px); box-shadow: 0 14px 30px rgba(27,94,32,.45); }
+    50% { transform: translateY(-2px); box-shadow: 0 16px 35px rgba(27,94,32,.55); }
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== Status do Mercado ===== */
+  .market-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .market-open {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border-left: 4px solid #28a745;
+    color: #155724;
+  }
+  
+  .market-closed {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+  }
+  
+  .status-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  
+  .status-message {
+    flex: 1;
+    line-height: 1.4;
+  }
+  
+  .status-message small {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  /* ===== Mensagens Django ===== */
+  .messages {
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  
+  .alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-left: 4px solid #ffc107;
+    color: #856404;
+  }
 
   .intro{
     font-size:clamp(15px,2vmin,18px);
@@ -202,13 +296,45 @@
 <div class="splash"><div class="logo"></div></div>
 
 <main class="app" id="app">
+  <!-- Mensagens Django -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Status do Mercado -->
+  <div class="market-status {% if not market_status.is_open %}market-closed{% else %}market-open{% endif %}">
+    <div class="status-icon">
+      {% if market_status.is_open %}
+        ✅
+      {% else %}
+        ⏰
+      {% endif %}
+    </div>
+    <div class="status-message">
+      <strong>{{ market_status.message }}</strong>
+      {% if not market_status.is_open and market_status.current_round %}
+        <br><small>Rodada ativa: {{ market_status.current_round }}</small>
+      {% endif %}
+    </div>
+  </div>
+
   <header class="header">
     <div class="logo" aria-hidden="true"></div>
     <div class="title">
       <h1>Escartola</h1>
       <div class="subtitle">Otimizador Inteligente de Escalações</div>
     </div>
-    <a href="{% url 'team' %}" class="cta">🚀 Começar Otimização</a>
+    <a href="{% url 'team' %}" class="cta {% if not market_status.is_open %}disabled{% endif %}">
+      {% if market_status.is_open %}
+        🚀 Começar Otimização
+      {% else %}
+        ⏰ Mercado Fechado
+      {% endif %}
+    </a>
   </header>
 
   <p class="intro">
@@ -242,7 +368,7 @@
         <div class="slide">
           <article class="card">
             <h3>📈 Métrica de Score</h3>
-            <p>Combina <b>média de pontuação dos atletas</b> e a<b>pontuação da última rodada</b> para balancear consistência e momento.</p>
+            <p>Combina <b>média de pontuação dos atletas</b> e a <b>pontuação da última rodada</b> para balancear consistência e momento.</p>
           </article>
         </div>
       </div>
@@ -263,7 +389,7 @@
 
 <script>
   // Marca a app como pronta após o splash
-  const SPLASH_MS = 900;
+  const SPLASH_MS = 1000;
   window.addEventListener('load', () => {
     const app = document.getElementById('app');
     setTimeout(() => app.classList.add('ready'), SPLASH_MS);
@@ -279,7 +405,7 @@
   const total = slides.length;
   let index = 0;
   let autoTimer = null;
-  const AUTO_MS = 4500;
+  const AUTO_MS = 6000;
 
   // Dots
   const dots = slides.map((_, i) => {
@@ -334,6 +460,37 @@
   // inicia
   applyTransform();
   startAuto();
+
+  // ===== Loading no botão CTA =====
+  const ctaButton = document.querySelector('.cta');
+  if (ctaButton) {
+    ctaButton.addEventListener('click', function(e) {
+      // Se botão estiver desabilitado, não fazer nada
+      if (this.classList.contains('disabled') || this.disabled) {
+        e.preventDefault();
+        return;
+      }
+      
+      // Prevenir navegação imediata
+      e.preventDefault();
+      
+      // Adicionar classes de loading
+      this.classList.add('loading');
+      this.disabled = true;
+      
+      // Adicionar efeito de fade na página
+      const app = document.getElementById('app');
+      if (app) {
+        app.style.transition = 'opacity 0.3s ease';
+        app.style.opacity = '0.7';
+      }
+      
+      // Navegar após mostrar o loading
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 800);
+    });
+  }
 </script>
 
 </body>

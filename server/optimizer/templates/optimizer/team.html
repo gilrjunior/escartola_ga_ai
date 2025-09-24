@@ -101,10 +101,11 @@
         border-radius: 10px;
         margin-bottom: 15px;
         text-align: center;
-        border-left: 5px solid #007bff;
+        border-left: 5px solid #2e7d32;
         font-size: 14px;
       }
-      .meta strong { color: #007bff; margin: 0 10px; }
+      .meta strong { color: #2e7d32; margin: 0 10px; }
+
 
       /* ===== controls ===== */
       .controls-container {
@@ -128,15 +129,15 @@
         transition: all 0.3s ease; background: white;
       }
       .form-control:focus {
-        outline: none; border-color: #007bff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        outline: none; border-color: #2e7d32; box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
       }
       .slider-container { display: flex; flex-direction: column; gap: 8px; }
       .slider { width: 100%; height: 8px; border-radius: 5px; background: #ddd; outline: none; appearance: none; cursor: pointer; }
       .slider::-webkit-slider-thumb {
-        appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #007bff;
+        appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #2e7d32;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       }
-      #alpha-value { background: #007bff; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+      #alpha-value { background: #2e7d32; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
       .btn-optimize {
         background: linear-gradient(135deg, #28a745, #20c997);
         color: white; border: none; padding: 14px 20px; border-radius: 10px; font-size: 16px; font-weight: bold;
@@ -249,8 +250,28 @@
       .coach  { background: radial-gradient(circle, #8B4513, #A0522D); border: 3px solid #654321; color: #fff; width: 50px; height: 50px; }
 
       .player:hover, .coach:hover { transform: translate(-50%, -50%) scale(1.15); }
-      .player-name { font-size: 9px; max-width: 38px; word-break: break-word; }
-      .coach-name  { font-size: 8px; max-width: 40px; word-break: break-word; }
+      .player-name { 
+        font-size: 9px; 
+        max-width: 42px; 
+        word-break: break-word; 
+        hyphens: auto;
+        line-height: 1.1;
+        text-align: center;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        white-space: normal;
+      }
+      .coach-name  { 
+        font-size: 8px; 
+        max-width: 35px; 
+        word-break: break-word; 
+        hyphens: auto;
+        line-height: 1.1;
+        text-align: center;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        white-space: normal;
+      }
 
       /* ===== legend & table ===== */
       .position-legend {
@@ -283,7 +304,7 @@
         width: 100%;
       }
       thead {
-        background: #007bff;
+        background: #2e7d32;
         color: #fff;
       }
       tbody {
@@ -302,25 +323,86 @@
         align-items: center;
       }
       
-      th:nth-child(1), td:nth-child(1) { flex: 0.8; } /* Posição */
-      th:nth-child(2), td:nth-child(2) { flex: 2.5; } /* Nome - maior */
+      th:nth-child(1), td:nth-child(1) { flex: 0.6; } /* Posição - menor */
+      th:nth-child(2), td:nth-child(2) { flex: 2.2; } /* Nome - maior */
       th:nth-child(3), td:nth-child(3) { flex: 0.8; } /* Preço - menor */
-      th:nth-child(4), td:nth-child(4) { flex: 0.8; } /* Score - menor */
+      th:nth-child(4), td:nth-child(4) { flex: 1.2; } /* Pontos - maior para caber o texto */
       th { 
-        background: #007bff; 
+        background: #2e7d32; 
         color: #fff; 
         font-weight: bold;
       }
 
       .tip { 
-        background: #e3f2fd; 
-        border-left: 4px solid #2196f3; 
+        background: #e2fae3; 
+        border-left: 4px solid #2e7d32; 
         padding: 10px 15px; 
         border-radius: 5px; 
         font-size: 12px;
         flex-shrink: 0;
       }
-      .tip code { background: #bbdefb; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+      .tip code { background: #bef7c0; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+
+      /* ===== Loading Overlay ===== */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .loading-overlay.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      .loading-container {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        width: 90%;
+      }
+
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #e3f2fd;
+        border-top: 4px solid #2e7d32;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+
+      .loading-text {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .loading-subtext {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.4;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
 
       /* Responsive adjustments */
       @media (max-width: 1200px) {
@@ -332,6 +414,18 @@
     </style>
   </head>
   <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">⚽ Otimizando seu time...</div>
+        <div class="loading-subtext">
+          Analisando milhares de combinações<br>
+          para encontrar a melhor escalação
+        </div>
+      </div>
+    </div>
+
     <div class="main-container">
       <!-- Lado esquerdo - Campo -->
       <div class="left-panel">
@@ -388,7 +482,7 @@
         <!-- Parte superior - Título e Controles -->
         <div class="right-top">
           <div class="logo-container">
-            <div class="logo"></div>
+            <a href="{% url 'home' %}"><div class="logo"></div></a>
           </div>
 
           <div class="meta">
@@ -402,6 +496,7 @@
               <strong>Fator de Importância:</strong> {{ alpha }}
             </div>
           </div>
+
 
           <div class="controls-container">
             <form method="GET" class="controls-form">
@@ -436,7 +531,7 @@
           <div class="stats-table">
             <table>
               <thead>
-                <tr><th>Posição</th><th>Nome</th><th>Preço</th><th>Score</th></tr>
+                <tr><th>Posição</th><th>Nome</th><th>Preço</th><th>Pontos na última rodada</th></tr>
               </thead>
               <tbody>
                 {% for athlete in team %}
@@ -465,9 +560,69 @@
       document.addEventListener('DOMContentLoaded', function() {
         const alphaSlider = document.getElementById('alpha');
         const alphaValue  = document.getElementById('alpha-value');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const optimizeForm = document.querySelector('.controls-form');
+        
+        // Função para obter parâmetros da URL
+        function getUrlParameter(name) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(name);
+        }
+        
+        // Restaurar valores dos campos da URL
+        function restoreFormValues() {
+          const budget = getUrlParameter('budget');
+          const alpha = getUrlParameter('alpha');
+          const formation = getUrlParameter('formation');
+          
+          // Restaurar budget
+          const budgetInput = document.getElementById('budget');
+          if (budget && budgetInput) {
+            budgetInput.value = budget;
+          }
+          
+          // Restaurar alpha
+          if (alpha && alphaSlider && alphaValue) {
+            alphaSlider.value = alpha;
+            alphaValue.textContent = alpha;
+          }
+          
+          // Restaurar formação
+          const formationSelect = document.getElementById('formation');
+          if (formation && formationSelect) {
+            formationSelect.value = formation;
+          }
+        }
+        
+        // Atualizar valor do alpha slider
         if (alphaSlider && alphaValue) {
           alphaSlider.addEventListener('input', () => alphaValue.textContent = alphaSlider.value);
         }
+
+        // Mostrar loading quando o formulário for submetido
+        if (optimizeForm && loadingOverlay) {
+          optimizeForm.addEventListener('submit', function(e) {
+            // Mostrar o overlay de loading
+            loadingOverlay.classList.add('show');
+            
+            // Desabilitar o botão para evitar múltiplos envios
+            const submitButton = optimizeForm.querySelector('.btn-optimize');
+            if (submitButton) {
+              submitButton.disabled = true;
+              submitButton.textContent = '⏳ Processando...';
+            }
+          });
+        }
+
+        // Ocultar loading quando a página carregar (caso de erro ou redirecionamento)
+        window.addEventListener('load', function() {
+          if (loadingOverlay) {
+            loadingOverlay.classList.remove('show');
+          }
+        });
+        
+        // Restaurar valores quando a página carregar
+        restoreFormValues();
       });
     </script>
   </body>

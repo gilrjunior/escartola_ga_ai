@@ -2,6 +2,7 @@ import requests
 from optimizer.classes.Athlete import Athlete
 from dotenv import load_dotenv # type: ignore
 import os
+from datetime import datetime
 
 def fetch_athletes():
     """
@@ -96,3 +97,51 @@ def map_formation(data):
         })
 
     return formations
+
+def check_market_status():
+
+
+    load_dotenv()
+
+    try:
+        
+        response = requests.get(f"{os.getenv('rounds_url')}", timeout=10)
+        response.raise_for_status()
+        
+        rodadas = response.json()
+        now = datetime.now()
+        
+        
+        for rodada in rodadas:
+            inicio = datetime.strptime(rodada['inicio'], '%Y-%m-%d %H:%M:%S')
+            fim = datetime.strptime(rodada['fim'], '%Y-%m-%d %H:%M:%S')
+            
+            if inicio <= now <= fim:
+                return {
+                    'is_open': False,
+                    'current_round': rodada['nome_rodada'],
+                    'message': f"Mercado fechado durante {rodada['nome_rodada']}. Aguarde a rodada finalizar para obter as melhores escalações."
+                }
+        
+        
+        return {
+            'is_open': True,
+            'current_round': None,
+            'message': "Mercado aberto - Otimização disponível"
+        }
+        
+    except requests.RequestException as e:
+        print(f"Erro ao consultar API do Cartola: {e}")
+        
+        return {
+            'is_open': True,
+            'current_round': None,
+            'message': "Mercado aberto - Otimização disponível"
+        }
+    except Exception as e:
+        print(f"Erro inesperado ao verificar mercado: {e}")
+        return {
+            'is_open': True,
+            'current_round': None,
+            'message': "Mercado aberto - Otimização disponível"
+        }

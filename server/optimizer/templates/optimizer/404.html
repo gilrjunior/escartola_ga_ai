@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada - Escartola</title>
+    <link rel="icon" type="image/png" href="{% static 'logo.png' %}">
+    
+    <style>
+        :root {
+            --brand-1: #1B5E20;
+            --brand-2: #2E7D32;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, Segoe UI, Arial, sans-serif;
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0e2f14;
+            padding: 20px;
+        }
+
+        .error-container {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: var(--radius);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            backdrop-filter: saturate(120%) blur(2px);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: url("{% static 'logo.png' %}") center/contain no-repeat;
+            margin: 0 auto 30px;
+            border-radius: 14px;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            color: var(--brand-1);
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--brand-1);
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .error-description {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--brand-1), var(--brand-2));
+            color: white;
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 24px rgba(27, 94, 32, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(27, 94, 32, 0.45);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--brand-1);
+            border-color: var(--brand-1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--brand-1);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .suggestions {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid var(--brand-2);
+        }
+
+        .suggestions h3 {
+            color: var(--brand-1);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .suggestions ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .suggestions li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .suggestions li::before {
+            content: "•";
+            color: var(--brand-2);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+            
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="logo"></div>
+        
+        <div class="error-code">404</div>
+        
+        <h1 class="error-title">Página não encontrada</h1>
+        
+        <p class="error-message">
+            Ops! Parece que você se perdeu no campo. A página que você está procurando não existe ou foi movida.
+        </p>
+        
+        <p class="error-description">
+            Mas não se preocupe! Você ainda pode encontrar a melhor escalação do Cartola FC.
+        </p>
+        
+        <div class="action-buttons">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                🏠 Voltar ao Início
+            </a>
+        </div>
+    </div>
+</body>
+</html>
