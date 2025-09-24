@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from optimizer.views import home, best_team_view
+from django.urls import re_path
+from optimizer.views import home, best_team_view, custom_404
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home, name="home"),  # Landing page inicial
     path("team/", best_team_view, name="team"),  # Página de otimização
+    # Captura qualquer URL que não corresponda às acima e redireciona para 404
+    re_path(r'^.*$', custom_404, name="404"),
 ]
 

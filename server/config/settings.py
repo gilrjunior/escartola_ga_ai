@@ -144,3 +144,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TEMPLATES[0]["DIRS"] = [BASE_DIR / "optimizer" / "templates"]  # simples e direto
+
+# Configuração para página 404 personalizada
+handler404 = 'optimizer.views.custom_404'
