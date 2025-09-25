@@ -1,0 +1,14 @@
+{
+    "functions": {
+      "api/vercel.py": {
+        "runtime": "python3.12",
+        "memory": 1024,
+        "maxDuration": 60
+      }
+    },
+    "routes": [
+      { "src": "/static/(.*)", "dest": "/static/$1" },
+      { "src": "/(.*)", "dest": "api/vercel.py" }
+    ]
+  }
+  
