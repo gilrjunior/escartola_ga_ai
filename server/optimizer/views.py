@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from django.http import Http404
 from django.contrib import messages
 from .formations import get_formation_config, get_position_coords, get_available_formations
-from optimizer.cartola_services import fecth_team_formations, check_market_status
+from server.optimizer.cartola_services import fecth_team_formations, check_market_status
 
 def home(request):
     """

@@ -1,6 +1,6 @@
 import numpy as np
-from optimizer.classes.Team import Team
-import optimizer.cartola_services as cartola_services
+from server.optimizer.classes.Team import Team
+import server.optimizer.cartola_services as cartola_services
 import random
 import sys
 
