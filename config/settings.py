@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "server.optimizer",
+    "optimizer",
 ]
 
 MIDDLEWARE = [
@@ -46,10 +46,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'server.optimizer.middleware.ForcePortugueseMiddleware',
+    'optimizer.middleware.ForcePortugueseMiddleware',
 ]
 
-ROOT_URLCONF = 'server.config.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'server.config.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
@@ -123,7 +123,7 @@ LANGUAGE_COOKIE_SECURE = False
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "server" / "config" / "public",
+    BASE_DIR / "config" / "public",
 ]
 
 # Default primary key field type
@@ -131,7 +131,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-TEMPLATES[0]["DIRS"] = [BASE_DIR / "server" / "optimizer" / "templates"]  # simples e direto
+TEMPLATES[0]["DIRS"] = [BASE_DIR / "optimizer" / "templates"]  # simples e direto
 
 # Configuração para página 404 personalizada
-handler404 = 'server.optimizer.views.custom_404'
+handler404 = 'optimizer.views.custom_404'
