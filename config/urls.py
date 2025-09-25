@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import re_path
-from server.optimizer.views import home, best_team_view, custom_404
+from optimizer.views import home, best_team_view, custom_404
 
 urlpatterns = [
     path("admin/", admin.site.urls),
