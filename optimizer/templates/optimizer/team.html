@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Escartola - Escalação Ótima</title>
     <link rel="icon" type="image/png" href="{% static 'logo.png' %}" sizes="16x16 32x32 48x48">
     <link rel="shortcut icon" href="{% static 'logo.png' %}">
@@ -18,15 +19,17 @@
         margin: 0;
         padding: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        height: 100vh;
-        overflow: hidden;
+        min-height: 100vh;
+        height: auto;
+        overflow: auto;
         display: flex;
         flex-direction: column;
       }
 
       .main-container {
         display: flex;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         width: 100vw;
         background: white;
       }
@@ -59,7 +62,7 @@
       .right-bottom {
         flex: 1;
         padding: 15px 20px;
-        overflow: hidden;
+        overflow: auto;
         display: flex;
         flex-direction: column;
         gap: 15px;
@@ -162,7 +165,7 @@
       .football-field {
         /* proporção oficial: 105m x 68m */
         aspect-ratio: 105 / 68;
-        width: min(95%, 800px);
+        width: min(100%, 800px);
         height: auto;
         background: linear-gradient(45deg, #4CAF50, #45a049);
         border: 6px solid #2E7D32;
@@ -242,17 +245,17 @@
       .player, .coach {
         position: absolute; transform: translate(-50%, -50%);
         display: flex; align-items: center; justify-content: center; text-align: center;
-        width: 80px; height: 80px; border-radius: 50%; font-size: 10px; font-weight: bold; cursor: pointer;
+        width: clamp(44px, 9vw, 80px); height: clamp(44px, 9vw, 80px); border-radius: 50%; font-size: 10px; font-weight: bold; cursor: pointer;
         transition: transform .2s ease, box-shadow .2s ease; z-index: 10;
         box-shadow: 0 4px 12px rgba(0,0,0,.4), inset 0 2px 4px rgba(255,255,255,.3);
       }
       .player { background: radial-gradient(circle, #FFD700, #FFA500); border: 3px solid #FF6B35; color: #333; }
-      .coach  { background: radial-gradient(circle, #8B4513, #A0522D); border: 3px solid #654321; color: #fff; width: 50px; height: 50px; }
+      .coach  { background: radial-gradient(circle, #8B4513, #A0522D); border: 3px solid #654321; color: #fff; width: clamp(36px, 7vw, 50px); height: clamp(36px, 7vw, 50px); }
 
-      .player:hover, .coach:hover { transform: translate(-50%, -50%) scale(1.15); }
+      .player:hover, .coach:hover { transform: translate(-50%, -50%) scale(1.07); }
       .player-name { 
-        font-size: 9px; 
-        max-width: 42px; 
+        font-size: clamp(8px, 1.9vw, 9px); 
+        max-width: clamp(34px, 6vw, 42px); 
         word-break: break-word; 
         hyphens: auto;
         line-height: 1.1;
@@ -262,8 +265,8 @@
         white-space: normal;
       }
       .coach-name  { 
-        font-size: 8px; 
-        max-width: 35px; 
+        font-size: clamp(7px, 1.7vw, 8px); 
+        max-width: clamp(28px, 5.5vw, 35px); 
         word-break: break-word; 
         hyphens: auto;
         line-height: 1.1;
@@ -308,7 +311,7 @@
         color: #fff;
       }
       tbody {
-        overflow: hidden;
+        overflow: auto;
         height: 100%;
       }
       tr {
@@ -409,7 +412,19 @@
         .main-container { flex-direction: column; height: auto; }
         .left-panel { min-height: 50vh; }
         .right-panel { min-height: 50vh; }
-        .football-field { width: min(95%, 500px); }
+        .football-field { width: min(100%, 640px); }
+      }
+
+      @media (max-width: 900px) {
+        .main-container { flex-direction: column; }
+        .left-panel, .right-panel { min-height: auto; }
+        .left-panel { padding: 16px; }
+        .football-field { width: min(100%, 560px); }
+        .right-bottom { overflow: visible; }
+      }
+
+      @media (max-width: 600px) {
+        .football-field { width: 100%; }
       }
     </style>
   </head>

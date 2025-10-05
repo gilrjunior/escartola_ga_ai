@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,9 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xir!5^=hoxgme23nth8#mv6+hkysf%$r1sj*70g*3f5lnr77kz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Controlled via environment: DJANGO_DEBUG=True/False
 DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app']
+# Hosts: in DEBUG allow all; otherwise read from env or default to Vercel domain
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '.vercel.app').split(',')
 
 # Application definition
 
