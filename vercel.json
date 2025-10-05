@@ -2,10 +2,8 @@
   "builds": [
     { "src": "config/wsgi.py", "use": "@vercel/python", "config": { "runtime": "python3.12" } }
   ],
-  "installCommand": "pip install --no-cache-dir -r requirements.txt",
   "routes": [
-    { "src": "/favicon.ico", "dest": "config/public/favicon.ico" },
-    { "src": "/logo.png", "dest": "config/public/logo.png" },
+    { "src": "/static/(.*)", "dest": "/staticfiles/$1" },
     { "src": "/(.*)", "dest": "config/wsgi.py" }
   ]
 }
