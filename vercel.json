@@ -9,8 +9,5 @@
   "routes": [
     { "src": "/static/(.*)", "dest": "/staticfiles/$1" },
     { "src": "/(.*)", "dest": "config/wsgi.py" }
-  ],
-  "env": { "POETRY_VIRTUALENVS_CREATE": "false" },
-  "installCommand": "pip install poetry && poetry export -f requirements.txt --without-hashes -o requirements.txt && pip install -r requirements.txt && poetry install --no-interaction --no-ansi --no-root",
-  "buildCommand": "python manage.py collectstatic --noinput"
+  ]
 }
