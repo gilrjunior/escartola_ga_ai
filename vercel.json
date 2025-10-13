@@ -1,7 +1,4 @@
 {
-  "builds": [
-    { "src": "config/wsgi.py", "use": "@vercel/python", "config": { "runtime": "python3.11" } }
-  ],
   "routes": [
     { "src": "/static/(.*)", "dest": "/config/public" },
     { "src": "/(.*)", "dest": "config/wsgi.py" }
