@@ -85,8 +85,8 @@ def best_team_view(request):
     
     try:
         # 1) parâmetros (pode vir da URL ou usar defaults)
-        budget = float(request.GET.get("budget", 110))
-        alpha = float(request.GET.get("alpha", 0.6))
+        budget = float(request.GET.get("budget", 100))
+        alpha = float(request.GET.get("alpha", 0.5))
         formation_name = request.GET.get("formation", "4-3-3")
         
         # Buscar formações do Cartola
