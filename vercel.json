@@ -1,7 +1,9 @@
 {
+  "builds": [
+    { "src": "config/wsgi.py", "use": "@vercel/python", "config": { "runtime": "python3.12" } }
+  ],
   "installCommand": "python3 -m pip install --upgrade pip && python3 -m pip install --no-compile --no-cache-dir -r requirements.txt",
-  "buildCommand": "python3 manage.py collectstatic --noinput",
-  "builds": [ { "src": "config/wsgi.py", "use": "@vercel/python", "config": { "runtime": "python3.11" } } ],
+  "buildCommand": "set -e; python3 manage.py collectstatic --noinput",
   "routes": [
     { "src": "/static/(.*)", "dest": "/staticfiles/$1" },
     { "src": "/(.*)", "dest": "config/wsgi.py" }
